@@ -33,6 +33,7 @@ view: return_products {
   measure: total_return_units {
     type: number
     sql: ${sum_return_units}+${sum_of_in_transit_unit} ;;
+    drill_fields: [product,from_area,from_category,flow_category,destination_category,new_return_type,sum_return_units,sum_of_in_transit_unit]
   }
 
   measure: average_in_transit_glpii {
@@ -74,6 +75,7 @@ view: return_products {
 
   dimension: from_area {
     type: string
+    map_layer_name: countries
     sql: ${TABLE}.From_Area ;;
   }
 
