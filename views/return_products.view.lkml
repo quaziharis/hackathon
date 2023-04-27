@@ -3,21 +3,24 @@ view: return_products {
   sql_table_name: dbo.Return_Products ;;
 
   measure: sum_of_in_transit_glpii {
+    label: "In-transist GLPII Amount"
     type: sum
     sql: ${in_transit_glpii} ;;
-    value_format_name: usd_0
+    value_format: "$0.000,,\" M\""
   }
 
   measure: sum_of_return_glpii {
+    label: "Return GLPII Amount"
     type: sum
     sql: ${returns_glpii} ;;
-    value_format_name: usd_0
+    value_format: "$0.000,,\" M\""
   }
 
   measure: sum_of_total_glpii {
+    label: "Total Return Amount"
     type: number
     sql: ${sum_of_return_glpii}+${sum_of_in_transit_glpii} ;;
-    value_format_name: usd_0
+    value_format: "$0.000,,\" M\""
   }
 
   measure: sum_return_units {
