@@ -5,40 +5,50 @@ view: return_products {
   measure: sum_of_in_transit_glpii {
     type: sum
     sql: ${in_transit_glpii} ;;
-    value_format_name: usd
+    value_format_name: usd_0
   }
 
   measure: sum_of_return_glpii {
     type: sum
     sql: ${returns_glpii} ;;
-    value_format_name: usd
+    value_format_name: usd_0
   }
 
   measure: sum_of_total_glpii {
     type: number
     sql: ${sum_of_return_glpii}+${sum_of_in_transit_glpii} ;;
-    value_format_name: usd
+    value_format_name: usd_0
   }
 
   measure: sum_return_units {
     type: sum
     sql: ${returns_units} ;;
+    value_format: "0.000,,\" M\""
   }
 
   measure: sum_of_in_transit_unit {
     type: sum
     sql: ${in_transit_units} ;;
+    value_format: "0.000,,\" M\""
   }
 
   measure: total_return_units {
     type: number
     sql: ${sum_return_units}+${sum_of_in_transit_unit} ;;
     drill_fields: [product,from_area,from_category,flow_category,destination_category,new_return_type,sum_return_units,sum_of_in_transit_unit]
+    value_format: "0.000,,\" M\""
   }
 
   measure: average_in_transit_glpii {
     type: average
     sql: ${in_transit_glpii} ;;
+  }
+
+  dimension_group: date {
+    type: time
+    sql:
+        DATEADD(wk, ${week}, DATEFROMPARTS(2022, 1, 1))
+  ;;
   }
 
 
