@@ -18,22 +18,25 @@ view: return_products {
     type: number
     sql: ${sum_of_return_glpii}+${sum_of_in_transit_glpii} ;;
     value_format_name: usd
+    drill_fields: [product,from_area,from_category,flow_category,destination_category,new_return_type,sum_return_units,sum_of_return_glpii,sum_of_in_transit_unit,sum_of_in_transit_glpii]
   }
 
   measure: sum_return_units {
     type: sum
     sql: ${returns_units} ;;
+    drill_fields: [product,from_area,from_category,flow_category,destination_category,new_return_type,sum_return_units,sum_of_return_glpii,sum_of_in_transit_unit,sum_of_in_transit_glpii]
   }
 
   measure: sum_of_in_transit_unit {
     type: sum
     sql: ${in_transit_units} ;;
+    drill_fields: [product,from_area,from_category,flow_category,destination_category,new_return_type,sum_return_units,sum_of_return_glpii,sum_of_in_transit_unit,sum_of_in_transit_glpii]
   }
 
   measure: total_return_units {
     type: number
     sql: ${sum_return_units}+${sum_of_in_transit_unit} ;;
-    drill_fields: [product,from_area,from_category,flow_category,destination_category,new_return_type,sum_return_units,sum_of_in_transit_unit]
+    drill_fields: [product,from_area,from_category,flow_category,destination_category,new_return_type,sum_return_units,sum_of_return_glpii,sum_of_in_transit_unit,sum_of_in_transit_glpii]
   }
 
   measure: average_in_transit_glpii {
@@ -65,12 +68,30 @@ view: return_products {
 
   dimension: destination_category {
     type: string
-    sql: CASE WHEN ${TABLE}.Destination_Category = 'HUB' or ${TABLE}.Destination_Category = 'Hub' then 'Hub' else ${TABLE}.Destination_Category end ;;
+    sql: CASE WHEN ${TABLE}.Destination_Category = 'HUB' or ${TABLE}.Destination_Category = 'Hub' then 'Hub'
+              When ${TABLE}.Destination_Category = 'FIeld' then 'Field' else ${TABLE}.Destination_Category end ;;
   }
+
+dimension: source_WH {
+  type: string
+  sql: case when ${flow_category} like '%->%' then
+        (LEFT(${flow_category}, CHARINDEX(' -> ', ${flow_category})))
+         when ${flow_category} like '%-%' then
+        (LEFT(${flow_category}, CHARINDEX(' - ', ${flow_category})))
+        else ${flow_category} end;;}
+
+dimension: destination_WH {
+  type: string
+  sql: case when ${flow_category} like '%->%' then
+       (RIGHT(${flow_category}, LEN(${flow_category}) - CHARINDEX(' -> ', ${flow_category})-3))
+       when ${flow_category} like '%- %' then
+         (RIGHT(${flow_category},LEN(${flow_category}) - CHARINDEX(' - ', ${flow_category})-1))
+          else ${flow_category} end;;
+ }
 
   dimension: flow_category {
     type: string
-    sql: ${TABLE}.Flow_Category ;;
+    sql: replace(${TABLE}.Flow_Category,'>','') ;;
   }
 
   dimension: from_area {
