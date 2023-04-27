@@ -41,6 +41,26 @@ view: return_products {
     sql: ${in_transit_glpii} ;;
   }
 
+
+  dimension: source_WH {
+    type: string
+    sql: case when ${flow_category} like '%->%' then
+                    (LEFT(${flow_category}, CHARINDEX(' -> ', ${flow_category})))
+              when ${flow_category} like '%-%' then
+                    (LEFT(${flow_category}, CHARINDEX(' - ', ${flow_category})))
+              else ${flow_category} end;;
+
+  }
+
+  dimension: destination_WH {
+    type: string
+    sql: case when ${flow_category} like '%->%' then
+                    (RIGHT(${flow_category}, LEN(${flow_category}) - CHARINDEX(' -> ', ${flow_category})-3))
+              when ${flow_category} like '%- %' then
+                   (RIGHT(${flow_category},LEN(${flow_category}) -  CHARINDEX(' - ', ${flow_category})-1))
+              else ${flow_category} end;;
+    }
+
   dimension: bu {
     type: string
     sql: ${TABLE}.BU ;;
