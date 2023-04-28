@@ -2,6 +2,31 @@
 view: return_products {
   sql_table_name: dbo.Return_Products ;;
 
+    parameter: Metrics {
+      type: unquoted
+      allowed_value: {
+        label: "Units"
+        value: "Units"
+      }
+      allowed_value: {
+        label: "Cost ($)"
+        value: "Dollar_Cost"
+      }
+      default_value: "Units"
+    }
+
+  measure: dynamic_measure {
+    label_from_parameter: Metrics
+    value_format_name: decimal_2
+    type: number
+    sql: {% if Metrics._parameter_value == 'Units' %}
+            ${total_return_units}
+         {% else %}
+            ${sum_of_total_glpii}
+         {% endif %};;
+  }
+
+
   measure: sum_of_in_transit_glpii {
     label: "In-transist GLPII Amount"
     type: sum
