@@ -33,7 +33,7 @@ view: return_products {
     type: sum
     sql: ${in_transit_glpii} ;;
     drill_fields: [product,from_area,from_category,flow_category,destination_category,new_return_type,sum_return_units,sum_of_return_glpii,sum_of_in_transit_unit,sum_of_in_transit_glpii]
-    # value_format: "$0.000,,\" M\""
+     value_format: "$0.000,,\" M\""
   }
 
   measure: sum_of_return_glpii {
@@ -41,7 +41,7 @@ view: return_products {
     type: sum
     sql: ${returns_glpii} ;;
     drill_fields: [product,from_area,from_category,flow_category,destination_category,new_return_type,sum_return_units,sum_of_return_glpii,sum_of_in_transit_unit,sum_of_in_transit_glpii]
-    # value_format: "$0.000,,\" M\""
+     value_format: "$0.000,,\" M\""
   }
 
   measure: sum_of_total_glpii {
