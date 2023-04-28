@@ -17,20 +17,22 @@ view: return_products {
 
   measure: dynamic_measure {
     label_from_parameter: Metrics
-    value_format_name: decimal_2
+    value_format: "0.000,,\" M\""
     type: number
     sql: {% if Metrics._parameter_value == 'Units' %}
             ${total_return_units}
          {% else %}
             ${sum_of_total_glpii}
          {% endif %};;
-  }
+    drill_fields: [product,from_area,from_category,flow_category,destination_category,new_return_type,sum_return_units,sum_of_return_glpii,sum_of_in_transit_unit,sum_of_in_transit_glpii]
+ }
 
 
   measure: sum_of_in_transit_glpii {
     label: "In-transist GLPII Amount"
     type: sum
     sql: ${in_transit_glpii} ;;
+    drill_fields: [product,from_area,from_category,flow_category,destination_category,new_return_type,sum_return_units,sum_of_return_glpii,sum_of_in_transit_unit,sum_of_in_transit_glpii]
     # value_format: "$0.000,,\" M\""
   }
 
@@ -38,6 +40,7 @@ view: return_products {
     label: "Return GLPII Amount"
     type: sum
     sql: ${returns_glpii} ;;
+    drill_fields: [product,from_area,from_category,flow_category,destination_category,new_return_type,sum_return_units,sum_of_return_glpii,sum_of_in_transit_unit,sum_of_in_transit_glpii]
     # value_format: "$0.000,,\" M\""
   }
 
@@ -79,17 +82,25 @@ view: return_products {
   measure: average_in_transit_glpii {
     type: average
     sql: ${in_transit_glpii} ;;
+    drill_fields: [product,from_area,from_category,flow_category,destination_category,new_return_type,sum_return_units,sum_of_return_glpii,sum_of_in_transit_unit,sum_of_in_transit_glpii]
   }
 
   measure: average_total_amount {
     type: average
     sql: ${returns_glpii}+${in_transit_glpii} ;;
+    drill_fields: [product,from_area,from_category,flow_category,destination_category,new_return_type,sum_return_units,sum_of_return_glpii,sum_of_in_transit_unit,sum_of_in_transit_glpii]
   }
 
   dimension_group: date {
     type: time
     sql:
-        DATEADD(wk, ${week}, DATEFROMPARTS(2022, 1, 1))
+        DATEADD(wk, ${week}, DATEFROMPARTS(2021, 12, 1))
+  ;;
+  }
+
+  dimension_group: Return {
+    type: time
+    sql: DATEADD(mm, ${month}, DATEFROMPARTS(2021, 12, 1))
   ;;
   }
 
