@@ -1,6 +1,6 @@
 
 view: return_products {
-  sql_table_name: dbo.Return_Products ;;
+  sql_table_name: dbo.Return_Product_Analysis ;;
 
     parameter: Metrics {
       type: unquoted
