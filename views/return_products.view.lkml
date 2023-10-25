@@ -41,6 +41,18 @@ view: return_products {
     drill_fields: [product,from_area,from_category,flow_category,destination_category,new_return_type,sum_return_units,sum_of_return_glpii,sum_of_in_transit_unit,sum_of_in_transit_glpii]
   }
 
+  measure: dynamic_measure_2 {
+    label_from_parameter: Metrics
+    value_format: "0.000,,\" M\""
+    type: number
+    sql: {% if Metrics._parameter_value == 'Units' %}
+            ${total_return_units}
+         {% else %}
+            ${sum_of_total_glpii}
+         {% endif %};;
+    drill_fields: [product,from_area,from_category,flow_category,destination_category,new_return_type,sum_return_units,sum_of_return_glpii,sum_of_in_transit_unit,sum_of_in_transit_glpii]
+  }
+
 
   measure: sum_of_in_transit_glpii {
     label: "In-transist GLPII Amount"
