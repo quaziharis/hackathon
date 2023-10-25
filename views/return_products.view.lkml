@@ -16,6 +16,7 @@ view: return_products {
       default_value: "Units"
     }
 
+
   measure: dynamic_measure {
     label_from_parameter: Metrics
     value_format: "0.000,,\" M\""
