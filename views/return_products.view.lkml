@@ -8,6 +8,7 @@ view: return_products {
         label: "Units"
         value: "Units"
       }
+
       allowed_value: {
         label: "Cost ($)"
         value: "Dollar_Cost"
